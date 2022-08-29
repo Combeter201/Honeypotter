@@ -1,0 +1,58 @@
+[
+    {
+        "event": {
+            "honeypotID": 1,
+            "token": "44a0f077ee35dc76b213ee45c33b88d97d3c27cb49c458720f47892302d1e76f",
+            "timestamp": "2022-08-29 13:24:27:570",
+            "type": "login",
+            "content": {
+                "srcIP": "192.168.178.114",
+                "service": "VSFTPD",
+                "user": "anonymous",
+                "pass": "test"
+            }
+        }
+    },
+    {
+        "event": {
+            "honeypotID": 1,
+            "token": "44a0f077ee35dc76b213ee45c33b88d97d3c27cb49c458720f47892302d1e76f",
+            "timestamp": "2022-08-29 13:24:37:358",
+            "type": "login",
+            "content": {
+                "srcIP": "192.168.178.114",
+                "service": "VSFTPD",
+                "user": "anonymous",
+                "pass": "password"
+            }
+        }
+    },
+    {
+        "event": {
+            "honeypotID": 1,
+            "token": "44a0f077ee35dc76b213ee45c33b88d97d3c27cb49c458720f47892302d1e76f",
+            "timestamp": "2022-08-29 13:25:24:524",
+            "type": "login",
+            "content": {
+                "srcIP": "192.168.178.114",
+                "service": "VSFTPD",
+                "user": "anonymous",
+                "pass": "password"
+            }
+        }
+    },
+    {
+        "event": {
+            "honeypotID": 1,
+            "token": "44a0f077ee35dc76b213ee45c33b88d97d3c27cb49c458720f47892302d1e76f",
+            "timestamp": "2022-08-29 13:25:43:902",
+            "type": "login",
+            "content": {
+                "srcIP": "192.168.178.114",
+                "service": "VSFTPD",
+                "user": "anonymous",
+                "pass": "password"
+            }
+        }
+    }
+]

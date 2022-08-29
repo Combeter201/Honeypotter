@@ -4,30 +4,12 @@ import json
 import datetime
 from os import path
 from scapy.all import *
+from eventHandler import *
 print("Sniffing ...")
 
-filename = './vsftpd_login.json'
+filename = './vsftpd_log.json'
 jsonObj = []
-newlogin = {}
-
-def save_data_to_json(input):
-    global jsonObj
-    global newlogin
-    with open(filename) as fp:
-        jsonObj = json.load(fp)
-
-        if "uploaded_file" not in input:
-            jsonObj.append(input)
-        else:
-            jsonObj.append(input)
-
-    with open(filename, 'w') as json_file:
-        json.dump(jsonObj, json_file, indent = 4, separators = (',',': '))
-    
-    newlogin = {}
-    jsonObj = []
-    if "uploaded_file" in input:
-        newlogin_with_file = {}
+content = {}
 
 def ftp_informations(packet):
     src = packet.getlayer(IP).src
@@ -37,25 +19,37 @@ def ftp_informations(packet):
     passwd = re.findall('(?i)PASS (.*)', raw)
     data = re.findall('(?i)STOR (.*)', raw)
 
+
     if user:
-        global newlogin
-        newlogin['timestamp'] = (datetime.now()).strftime("%c")
-        newlogin['src_ip'] = str(src)
-        newlogin['user'] = str(user[0]).replace("\\r\\n'", "")
+        global content
+        content["srcIP"] = src
+        content["service"] = "VSFTPD"
+        content["user"] = str(user[0]).replace("\\r\\n'", "")
 
     if passwd:
-        newlogin['password'] = str(passwd[0]).replace("\\r\\n'", "")
+        content["pass"] = str(passwd[0]).replace("\\r\\n'", "")
 
     if data:
-        global newlogin_with_file
-        newlogin = newlogin_with_file
-        newlogin['uploaded_file'] = str(data[0]).replace("\\r\\n'", "")
-    
-    if "user" in newlogin and "password" in newlogin:
-        if "uploaded_file" in newlogin:
-            save_data_to_json(newlogin)
+        global content_with_file
+        content = content_with_file
+        content['uploaded_file'] = str(data[0]).replace("\\r\\n'", "")
+
+    if "user" in content and "pass" in content:
+        if "uploaded_file" in content:
+            json_format_API(
+                    (datetime.now()).strftime("%Y-%m-%d %H:%M:%S:%f")[:-3],
+                    "vsftpd_fileupload",
+                    content)
+            content = {}
+            content_with_file = {}
+
         else:
-            newlogin_with_file = newlogin
-            save_data_to_json(newlogin)
+            content_with_file = content
+            json_format_API(
+                    (datetime.now()).strftime("%Y-%m-%d %H:%M:%S:%f")[:-3],
+                    "login",
+                    content)
+            content = {}
+
 
 sniff(filter='tcp port 21', prn=ftp_informations)

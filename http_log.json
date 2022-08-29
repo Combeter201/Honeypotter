@@ -1,0 +1,16 @@
+[
+    {
+        "event": {
+            "honeypotID": 1,
+            "token": "44a0f077ee35dc76b213ee45c33b88d97d3c27cb49c458720f47892302d1e76f",
+            "timestamp": "2022-08-29 13:26:18:269",
+            "type": "login",
+            "content": {
+                "srcIP": "192.168.178.114",
+                "service": "HTTP",
+                "user": "user",
+                "pass": "password"
+            }
+        }
+    }
+]

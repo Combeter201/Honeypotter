@@ -2,8 +2,10 @@
 
 from flask import Flask, request, render_template
 from os import path
+from eventHandler import *
 import datetime
 import json
+import requests
 
 app = Flask(__name__)
 
@@ -11,26 +13,34 @@ app = Flask(__name__)
 def index():
     
     if request.method == "POST":
-        #print(request.form["username"])
-        save_data_to_json((datetime.datetime.now()).strftime("%c"), request.form["username"], request.form["password"], request.headers.get("User-Agent"))
-    
+
+        content = {}
+        content["srcIP"] = request.remote_addr
+        content["service"] = "HTTP"
+        content["user"] = request.form["username"]
+        content["pass"] = request.form["password"]
+
+        json_format_API(
+                (datetime.datetime.now()).strftime("%Y-%m-%d %H:%M:%S:%f")[:-3],
+                "login",
+                content)
+#                request.headers.get("User-Agent"))
+
+    if request.method == "GET":
+
+        content = {}
+        content["srcIP"] = request.remote_addr
+        content["requestType"] = "GET"
+        content["requestString"] = request.path
+        content["agent"] = request.headers.get("User-Agent")
+
+        json_format_API(
+                (datetime.datetime.now()).strftime("%Y-%m-%d %H:%M:%S:%f")[:-3],
+                "HTTP",
+                content)
+#                request.headers.get("User-Agent")
+
     return render_template('login.html')
 
-def save_data_to_json(date, username, password, fingerprint):
-    jsonObj = []
-    httprequest = {}
-    filename = './http_login.json'
-    with open(filename) as fp:
-        jsonObj = json.load(fp)
-        httprequest['timestamp'] = date
-        httprequest['username'] = username
-        httprequest['password'] = password
-        httprequest['fingerprint'] = fingerprint
-        jsonObj.append(httprequest)
-
-    with open(filename, 'w') as json_file:
-        json.dump(jsonObj, json_file, indent = 4, separators = (',',': '))
-    print("New Request saved")
-
 if __name__=='__main__':
-    app.run(port=80, debug=True)
+    app.run(host="0.0.0.0", port=80, debug=True)
