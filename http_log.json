@@ -12,5 +12,19 @@
                 "pass": "password"
             }
         }
+    },
+    {
+        "event": {
+            "honeypotID": 1,
+            "token": "44a0f077ee35dc76b213ee45c33b88d97d3c27cb49c458720f47892302d1e76f",
+            "timestamp": "2022-09-02 13:02:16:524",
+            "type": "login",
+            "content": {
+                "srcIP": "192.168.178.114",
+                "service": "HTTP",
+                "user": "user",
+                "pass": "user"
+            }
+        }
     }
 ]
